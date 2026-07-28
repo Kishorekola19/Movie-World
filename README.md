@@ -1,100 +1,100 @@
-# MovieVerse - IMDb-inspired Movie Platform
+# 🎬 Movie World
 
-MovieVerse is a production-ready, full-stack web application built using the MERN stack. It offers an immersive UI similar to popular streaming platforms with modern dark aesthetics, smooth animations, and real-time features.
+Movie World is a full-stack movie streaming and discovery web application built using the **MERN Stack**. It enables users to explore trending, popular, top-rated, and upcoming movies through a clean and responsive interface. Users can search for movies, view detailed information, create an account, log in securely, and save their favorite movies to a personalized watchlist.
 
-## Tech Stack
-- **Frontend**: React.js, Tailwind CSS, Framer Motion, Zustand, Socket.IO Client, Vite
-- **Backend**: Node.js, Express.js, MongoDB (Mongoose), JWT, bcryptjs, Socket.IO
+🌐 **Live Demo:**  
+https://movie-world-blush.vercel.app/
 
-## Features
+---
+
+## 🚀 About the Project
+
+Movie World is designed to provide a seamless movie browsing experience. The application integrates with the **TMDB API** to fetch real-time movie data and uses **MongoDB** to securely manage user accounts and watchlists. The project follows a client-server architecture with separate frontend and backend applications.
+
+---
+
+## 🛠️ Tech Stack
+
 ### Frontend
-- **Modern UI**: Dark-themed, responsive, glassmorphism design.
-- **Home Page**: Hero section, infinite scrolling trending movies, top-rated movies.
-- **Search**: Debounced real-time search in the navbar.
-- **Movie Details**: Comprehensive details fetched from TMDB, live real-time discussion room using Socket.IO.
-- **User Dashboard**: Manage your personal watchlist.
-- **Auth**: Login & Registration with JWT.
+- React.js
+- HTML5
+- CSS3
+- JavaScript (ES6)
+- Axios
 
 ### Backend
-- **REST API**: Built with Express and MVC pattern.
-- **Authentication**: JWT-based secure authentication and role-based access.
-- **Database**: MongoDB with optimal indexing.
-- **Security**: Rate limiting, helmet for headers, CORS.
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT Authentication
+- Bcrypt.js
 
-## Project Setup
+---
 
-### Prerequisites
-- Node.js (v18+)
-- MongoDB running locally or a MongoDB Atlas URI
-- TMDB API Key (Get it from [TMDB](https://www.themoviedb.org/))
+## 📁 Project Structure
 
-### 1. Clone & Install
-Install dependencies for both backend and frontend:
-
-```bash
-cd backend
-npm install
-
-cd ../frontend
-npm install
+```
+Movie-World/
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── assets/
+│   │   ├── services/
+│   │   └── App.js
+│   └── package.json
+│
+├── backend/
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── utils/
+│   ├── server.js
+│   └── package.json
+│
+├── README.md
+└── .gitignore
 ```
 
-### 2. Environment Variables
-Create a `.env` file in the `backend` directory based on the `.env.example`:
+---
 
-```env
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/movieverse
-JWT_SECRET=your_super_secret_jwt_key
-TMDB_API_KEY=your_tmdb_api_key_here
-NODE_ENV=development
-```
+## ✨ Features
 
-### 3. Running the App
-Run both servers concurrently.
+- Browse trending and popular movies
+- Search movies by title
+- View detailed movie information
+- User registration and login
+- Secure authentication using JWT
+- Personalized watchlist
+- Responsive design for all devices
+- Fast and intuitive user interface
 
-**Backend:**
-```bash
-cd backend
-npm run dev
-```
+---
 
-**Frontend:**
-```bash
-cd frontend
-npm run dev
-```
+## 📌 Frontend
 
-Visit `http://localhost:5173` to view the application.
+The frontend is developed using **React.js** and provides a responsive, user-friendly interface. It communicates with the backend APIs to display movie data, authenticate users, and manage watchlists.
 
-## Folder Structure
-- `/backend`: Node/Express APIs, Mongoose models, Controllers, Middleware, Routes.
-- `/frontend`: React/Vite application, Zustand stores, Tailwind CSS styling, Components, Pages.
+---
 
-## Security Practices
-- Passwords hashed with bcrypt.
-- JWT tokens for protected routes.
-- Express rate limiting for DDoS protection.
-- Helmet for secure HTTP headers.
+## ⚙️ Backend
 
-## API Documentation
-### Auth Routes
-- `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login` - Authenticate user & get token
-- `GET /api/auth/profile` - Get user profile
+The backend is built with **Node.js**, **Express.js**, and **MongoDB**. It handles user authentication, API requests, database operations, and secure data management.
 
-### Movie Routes
-- `GET /api/movies/trending` - Get trending movies
-- `GET /api/movies/top-rated` - Get top-rated movies
-- `GET /api/movies/search` - Search movies
-- `GET /api/movies/:id` - Get movie details
+---
 
-### User Routes
-- `GET /api/users/watchlist` - Get user watchlist
-- `POST /api/users/watchlist` - Add to watchlist
-- `DELETE /api/users/watchlist/:movieId` - Remove from watchlist
+## 👨‍💻 Developed By
 
-## Future Enhancements
-- AI Recommendation Engine.
-- Redis caching for TMDB API calls.
-- Admin dashboard for content management.
+**Sricharan Goud**
+
+- 🌐 Portfolio: https://sricharangoud.github.io/Personal_Portfolio/
+- 💻 GitHub: https://github.com/sricharangoud
+
+---
+
+⭐ If you found this project useful, consider giving it a **Star** on GitHub!
