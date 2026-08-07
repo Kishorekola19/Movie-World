@@ -5,6 +5,13 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+});
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { createServer } from 'http';
