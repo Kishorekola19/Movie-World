@@ -9,16 +9,22 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [loading, setLoading] = useState(false);
   const { register } = useAuthStore();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
+    setLoading(true);
+    setErrorMsg('');
     try {
       await register(name, email, password);
       navigate('/dashboard');
     } catch (error) {
       setErrorMsg(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -76,9 +82,10 @@ const Register = () => {
           
           <button 
             type="submit" 
-            className="w-full bg-secondary hover:bg-emerald-600 text-white font-semibold py-3 rounded-xl transition-transform hover:scale-[1.02] active:scale-95"
+            disabled={loading}
+            className="w-full bg-secondary hover:bg-emerald-600 disabled:opacity-50 text-white font-semibold py-3 rounded-xl transition-transform hover:scale-[1.02] active:scale-95"
           >
-            Create Account
+            {loading ? 'Creating Account...' : 'Create Account'}
           </button>
         </form>
 
