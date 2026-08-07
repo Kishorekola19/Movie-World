@@ -9,9 +9,13 @@ let userIdCounter = 1;
 export const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
   
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: 'Please fill in all required fields (Name, Email, Password)' });
+  }
+
   const userExists = global.mockDB.users.find(u => u.email === email);
   if (userExists) {
-    return res.status(400).json({ message: 'User already exists' });
+    return res.status(400).json({ message: 'User already exists with this email address' });
   }
 
   const user = {
