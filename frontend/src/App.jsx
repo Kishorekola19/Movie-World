@@ -1,12 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import MovieDetails from './pages/MovieDetails';
 import CategoryPage from './pages/CategoryPage';
-import Login from './pages/Login';
-import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -18,16 +15,10 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/movie/:id" element={<MovieDetails />} />
             <Route path="/movies/:lang" element={<CategoryPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route 
-              path="/dashboard" 
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } 
-            />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/watchlist" element={<Dashboard />} />
+            <Route path="/login" element={<Navigate to="/" replace />} />
+            <Route path="/register" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
       </div>

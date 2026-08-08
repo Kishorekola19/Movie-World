@@ -20,6 +20,11 @@ const MovieDetails = () => {
   useEffect(() => {
     fetchMovieDetails(id);
     
+    // Check local watchlist state
+    const localWatchlist = JSON.parse(localStorage.getItem('movieVerse_watchlist') || '[]');
+    const exists = localWatchlist.some(m => String(m.movieId) === String(id));
+    setIsAdded(exists);
+
     // Join socket room
     socket.emit('join_room', id);
     
@@ -34,12 +39,12 @@ const MovieDetails = () => {
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-    if (chatMessage.trim() && user) {
+    if (chatMessage.trim()) {
       const msgData = {
         room: id,
-        user: user.name,
+        user: 'Guest User',
         text: chatMessage,
-        time: new Date().toLocaleTimeString(),
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
       socket.emit('send_message', msgData);
       setMessages((prev) => [...prev, msgData]);
@@ -50,19 +55,23 @@ const MovieDetails = () => {
   const [showTrailer, setShowTrailer] = useState(false);
   const trailer = movieDetails?.videos?.results?.find(v => v.type === 'Trailer') || movieDetails?.videos?.results?.[0];
 
-  const addToWatchlist = async () => {
-    if (!user) return alert('Please login first');
-    try {
-      const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/users/watchlist`, {
+  const toggleWatchlist = () => {
+    if (!movieDetails) return;
+    const localWatchlist = JSON.parse(localStorage.getItem('movieVerse_watchlist') || '[]');
+    const exists = localWatchlist.some(m => String(m.movieId) === String(movieDetails.id));
+    let updated;
+    if (exists) {
+      updated = localWatchlist.filter(m => String(m.movieId) !== String(movieDetails.id));
+      setIsAdded(false);
+    } else {
+      updated = [...localWatchlist, {
         movieId: movieDetails.id,
         title: movieDetails.title,
         posterPath: movieDetails.poster_path
-      }, config);
+      }];
       setIsAdded(true);
-    } catch (error) {
-      console.error(error);
     }
+    localStorage.setItem('movieVerse_watchlist', JSON.stringify(updated));
   };
 
   if (loading || !movieDetails) {
@@ -147,8 +156,8 @@ const MovieDetails = () => {
               >
                 <Play className="w-5 h-5 fill-current" /> Trailer
               </button>
-              <button onClick={addToWatchlist} className="bg-surface hover:bg-slate-700 text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 transition-all border border-slate-600">
-                <Plus className="w-5 h-5" /> {isAdded ? 'Added' : 'Watchlist'}
+              <button onClick={toggleWatchlist} className="bg-surface hover:bg-slate-700 text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 transition-all border border-slate-600">
+                <Plus className="w-5 h-5" /> {isAdded ? 'Added to Watchlist' : 'Add to Watchlist'}
               </button>
               <button className="bg-surface hover:bg-slate-700 w-12 h-12 flex items-center justify-center rounded-xl transition-all border border-slate-600">
                 <Heart className="w-5 h-5" />
@@ -225,14 +234,12 @@ const MovieDetails = () => {
               type="text" 
               value={chatMessage}
               onChange={(e) => setChatMessage(e.target.value)}
-              placeholder={user ? "Share your thoughts..." : "Login to chat"}
-              disabled={!user}
-              className="flex-1 bg-background border border-slate-600 rounded-xl px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50"
+              placeholder="Share your thoughts..."
+              className="flex-1 bg-background border border-slate-600 rounded-xl px-4 py-3 focus:outline-none focus:border-primary"
             />
             <button 
               type="submit"
-              disabled={!user}
-              className="bg-primary hover:bg-blue-600 px-8 py-3 rounded-xl font-semibold disabled:opacity-50 transition-colors"
+              className="bg-primary hover:bg-blue-600 px-8 py-3 rounded-xl font-semibold transition-colors text-white"
             >
               Send
             </button>

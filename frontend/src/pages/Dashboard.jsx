@@ -6,33 +6,19 @@ import useAuthStore from '../store/useAuthStore';
 import axios from 'axios';
 
 const Dashboard = () => {
-  const { user } = useAuthStore();
   const [watchlist, setWatchlist] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchWatchlist = async () => {
-      try {
-        const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/users/watchlist`, config);
-        setWatchlist(data.movies || []);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    if (user) fetchWatchlist();
-  }, [user]);
+    const localWatchlist = JSON.parse(localStorage.getItem('movieVerse_watchlist') || '[]');
+    setWatchlist(localWatchlist);
+    setLoading(false);
+  }, []);
 
-  const removeFromWatchlist = async (movieId) => {
-    try {
-      const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.delete(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/users/watchlist/${movieId}`, config);
-      setWatchlist(watchlist.filter(m => m.movieId !== movieId));
-    } catch (error) {
-      console.error(error);
-    }
+  const removeFromWatchlist = (movieId) => {
+    const updated = watchlist.filter(m => String(m.movieId) !== String(movieId));
+    setWatchlist(updated);
+    localStorage.setItem('movieVerse_watchlist', JSON.stringify(updated));
   };
 
   return (
@@ -43,7 +29,7 @@ const Dashboard = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Profile Header (Glassmorphism) */}
+        {/* Collection Header (Glassmorphism) */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -53,18 +39,18 @@ const Dashboard = () => {
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-gradient-to-br from-primary/40 to-transparent rounded-full blur-3xl pointer-events-none"></div>
 
           <div className="relative">
-            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center overflow-hidden p-1 shadow-[0_0_30px_rgba(59,130,246,0.5)]">
+            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center overflow-hidden p-1 shadow-[0_0_30px_rgba(59,130,246,0.5)]">
               <div className="w-full h-full bg-slate-900 rounded-full flex items-center justify-center">
-                <User className="w-16 h-16 text-white/80" />
+                <Heart className="w-12 h-12 text-red-500 fill-current" />
               </div>
             </div>
           </div>
           
           <div className="text-center md:text-left flex-1 z-10">
             <h1 className="text-4xl md:text-5xl font-extrabold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 tracking-tight">
-              {user?.name}
+              My Watchlist & Favorites
             </h1>
-            <p className="text-primary/80 font-medium mb-6">{user?.email}</p>
+            <p className="text-primary/80 font-medium mb-6">Enjoy free, instant access to all your saved movies</p>
             
             <div className="flex flex-wrap gap-4 justify-center md:justify-start">
               <div className="bg-black/40 backdrop-blur-md px-5 py-3 rounded-2xl border border-white/10 flex items-center gap-3 hover:bg-white/5 transition-colors">
@@ -73,7 +59,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <div className="text-2xl font-bold leading-none">{watchlist.length}</div>
-                  <div className="text-xs text-gray-400 font-medium uppercase tracking-wider">Watchlist</div>
+                  <div className="text-xs text-gray-400 font-medium uppercase tracking-wider">Saved Movies</div>
                 </div>
               </div>
 
@@ -82,26 +68,12 @@ const Dashboard = () => {
                   <Film className="w-5 h-5 text-blue-400" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold leading-none">Novice</div>
-                  <div className="text-xs text-gray-400 font-medium uppercase tracking-wider">Cinephile Rank</div>
-                </div>
-              </div>
-
-              <div className="bg-black/40 backdrop-blur-md px-5 py-3 rounded-2xl border border-white/10 flex items-center gap-3 hover:bg-white/5 transition-colors">
-                <div className="bg-yellow-500/20 p-2 rounded-lg">
-                  <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold leading-none">0</div>
-                  <div className="text-xs text-gray-400 font-medium uppercase tracking-wider">Reviews</div>
+                  <div className="text-2xl font-bold leading-none">Free Pass</div>
+                  <div className="text-xs text-gray-400 font-medium uppercase tracking-wider">Access Level</div>
                 </div>
               </div>
             </div>
           </div>
-
-          <button className="z-10 bg-white/5 hover:bg-white/10 border border-white/10 shadow-lg px-6 py-3 rounded-2xl flex items-center gap-2 transition-all hover:scale-105 active:scale-95 font-semibold text-white/90">
-            <Settings className="w-5 h-5" /> Account Settings
-          </button>
         </motion.div>
 
         {/* Watchlist Section */}

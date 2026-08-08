@@ -130,22 +130,13 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center space-x-4">
-            {user ? (
-              <div className="flex items-center gap-4">
-                <Link to="/dashboard" className="flex items-center gap-2 hover:text-primary transition-colors">
-                  <User className="w-5 h-5" />
-                  <span className="hidden md:inline">{user.name}</span>
-                </Link>
-                <button onClick={handleLogout} className="text-gray-400 hover:text-red-500 transition-colors">
-                  <LogOut className="w-5 h-5" />
-                </button>
-              </div>
-            ) : (
-              <div className="space-x-4">
-                <Link to="/login" className="text-gray-300 hover:text-white transition-colors">Log In</Link>
-                <Link to="/register" className="bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded-full font-medium transition-colors">Sign Up</Link>
-              </div>
-            )}
+            <Link 
+              to="/watchlist" 
+              className="bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded-full font-medium transition-all flex items-center gap-2 shadow-lg shadow-blue-500/20 hover:scale-105"
+            >
+              <span>❤️</span>
+              <span>My Watchlist</span>
+            </Link>
           </div>
         </div>
       </div>
